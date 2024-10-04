@@ -160,7 +160,7 @@ class Stalker:
 
     def MakeChannel(self, name):
         payload = {
-            "guild_id": "1246153061517234236",
+            # "guild_id": "1246153061517234236",
             "name": name,
             "type": 0
         }
